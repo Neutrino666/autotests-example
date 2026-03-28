@@ -7,14 +7,11 @@ import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
-import learn.qa.config.Config;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("ClickTest")
 public class ClickTest {
-
-  private final Config CFG = Config.getInstance();
 
   @Test
   @DisplayName("Selenide click button")
@@ -24,16 +21,19 @@ public class ClickTest {
         .savePageSource(false)
         .screenshots(false)
     );
-
     // Настроили браузер
     Configuration.browser = "chrome";
     Configuration.browserVersion = "145";
-
     // Сценарий
-    Selenide.open(CFG.frontUrl());
-    $("a[href='/click']").click();
-    $("#badButton").click();
+    Selenide.open("http://uitestingplayground.com");
+    $("a[href='/click']")
+        .as("Главная страница. Кнопка клик")
+        .click();
     $("#badButton")
+        .as("Станица Клик. Кнопка клик")
+        .click();
+    $("#badButton")
+        .as("Атрибут класс кнопки клик")
         .shouldHave(attribute("class", "btn btn-success"));
   }
 }
