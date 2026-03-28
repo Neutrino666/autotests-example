@@ -14,6 +14,17 @@
 #### 1. Установить Java версии 17.
 Версию установленной Java необходимо проверить командой `java -version`
 
+# Возможные вопросы
+#### А где находятся тесты?
+src/test/java/learn/qa/test
+
+#### Как посмотреть отчёт теста в Allure?
+![alt text](allure-report-view-local.png "Смотрим отчет в браузере")
+
+#### Как почистить отчёты?
+Скрин выше
+Tasks/build/clean
+
 # Пример UI теста
 ```java
 // Все зависимости которые используются в тесте тут
@@ -99,7 +110,59 @@ public class ClickTest {
   bash docker-compose-e2e.sh
 ```
 
+Развернутые локально контейнеры будут доступны в браузере по ссылкам:
+* [Allure serve](http://127.0.0.1:8081/)
+* [Selenoid UI](http://127.0.0.1:9091/#/)
+
+#### 4. Настройка отправки отчетов
+в корне проекта файл: build.gradle
+```groovy
+allureServer {
+    relativeResultDir = 'build/allure-results'
+    allureServerUrl = 'http://127.0.0.1:8081'
+
+    requestToGeneration = { uuid ->
+        """{"reportSpec": {
+                "path": [ "Amurskiy-A" ],
+                "executorInfo": {
+                    "buildName": "Amurskiy-A",
+                    "buildUrl": "Amurskiy-A_autotests",
+                    "reportName": "Amurskiy-A_autotests"
+                }
+            },
+            "results": [ "$uuid" ],
+            "deleteResults": true
+        }"""
+    }
+}
+```
+allureServerUrl - ссылка по которой будет публиковать отчёт должна совпадать с [Allure serve](http://127.0.0.1:8081/)
+
+Эти значения можно и нужно отредактировать под себя, рекомендую отказаться от пробелов в наименовании любых сущностей
+* **path** - пусть по которому сохранится
+* **название** - сборки отчёта buildName
+* **reportName** - название отчёта
+
+Пример тут заменил значения на текст **New_Text**
+```groovy
+requestToGeneration = { uuid ->
+    """{"reportSpec": {
+                "path": [ "New_Text" ],
+                "executorInfo": {
+                    "buildName": "New_Text",
+                    "buildUrl": "New_Text",
+                    "reportName": "New_Text"
+                }
+            },
+            "results": [ "$uuid" ],
+            "deleteResults": true
+        }"""
+}
+```
+
 #### 3. Удаление всех контейнеров
+Удалит все контейнеры которые
+Но не удалить images
 **Mac**
 ```sh
   bash clear-docker.sh 
