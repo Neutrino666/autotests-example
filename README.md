@@ -92,7 +92,7 @@ public class ClickTest {
 Для удобства вынесены в отдельный файл для запуска из md файла
  * [Mac](./commands_mac_os.md) 
 
-#### 1.2 Настройка
+#### 1.1 Настройка
 
 Докер нужен для запуска Allure serve и Selenoid + Selenoid UI
 
