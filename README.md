@@ -88,7 +88,7 @@ public class ClickTest {
 
 # Docker (Опционально)
 
-#### 1. Настройка
+#### 1.2 Настройка
 
 Докер нужен для запуска Allure serve и Selenoid + Selenoid UI
 
@@ -99,6 +99,12 @@ public class ClickTest {
 [Установка на Linux](https://docs.docker.com/desktop/install/linux-install/)
 
 После установки и запуска docker daemon необходимо убедиться в работе команд docker, например `docker -v`
+
+#### 1.2 Создать volume для сохранения данных отчётов
+**Mac**
+```sh
+  docker volume create allure-results
+```
 
 #### 2. Запуск контейнеров
 Команды можно запустить из документации

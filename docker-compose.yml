@@ -32,7 +32,7 @@ services:
     container_name: allure-server.dc
     image: kochetkovma/allure-server:2.13.9
     volumes:
-      - allure-results:/app/allure-results
+      - allure-results:/allure
     ports:
       - 8081:8080
 
