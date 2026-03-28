@@ -71,7 +71,6 @@ dependencies {
     testImplementation("io.qameta.allure:allure-selenide:${allureVersion}") {
         exclude group: 'com.codeborne'
     }
-    testImplementation "io.qameta.allure:allure-assertj:${allureVersion}"
     // WEB
     testImplementation "com.codeborne:selenide:${selenideVersion}"
     // Annotation
