@@ -173,3 +173,81 @@ requestToGeneration = { uuid ->
 ```sh
   bash clear-docker.sh 
 ```
+## 5. Загрузка Allure отчетов на удаленный сервер
+
+Для загрузки отчетов на удаленный Allure сервер небоходимо запустить ssh тоннель по локальному порту **8080**
+
+### 5.1 Запуск SSH тоннеля на Win
+
+1. Прожать комбинацию клавиш **Win + R**
+2. В появившемся окне вбить **cmd** нажать **Enter**
+3. Откроется коммандная строка Win, туда вбить следующую комманду
+
+```
+ssh -L 8080:localhost:8080 -N user@ip.address -p port
+```
+
+где
+* **user** - пользователь
+* **ip.address** - ip адрес удаленного сервера
+* **port** - ssh порт
+
+4. Сервер запросит пароль
+```
+user@ip's password:
+```
+ввести пароль пользователя, нажать **Enter**
+5. При успешном подключении дополнительных сообщений не будет. Не закрывайте данное окно на период работы с Allure сервером
+
+### 5.2 Запуск SSH тоннеля на Mac OS
+
+1. Открыть поиск
+2. Вбить в поиск **terminal**
+3. Дважды прожать по **Terminal**, откроется коммандая строка
+4. Повторить шаги 3, 4, 5 аналогично инструкции для Win
+
+### 5.3 Настройка Gradle
+
+Обновить значение
+* **allureServerUrl** - подставить туда **http://localhost:8080**
+
+```groovy
+allureServer {
+    relativeResultDir = 'build/allure-results'
+    allureServerUrl = 'http://localhost:8080'
+
+    requestToGeneration = { uuid ->
+        """{"reportSpec": {
+                "path": [ "Amurskiy-A" ],
+                "executorInfo": {
+                    "buildName": "Amurskiy-A",
+                    "buildUrl": "Amurskiy-A_autotests",
+                    "reportName": "Amurskiy-A_autotests"
+                }
+            },
+            "results": [ "$uuid" ],
+            "deleteResults": true
+        }"""
+    }
+}
+```
+
+### 5.4 Загрузка отчетов
+
+1. Перед запуском тестов запускаем задачу, чтобы почистить сгенерированные отчеты
+```
+gradle clean
+```
+2. Прогоняем наши тесты
+3. Результаты должны автоматически загрузить на Allure сервер по окончанию прогона тестов
+
+* Если результаты не загрузились автоматически, запустить Gradle задачи
+```
+allureServerGenerate
+```
+
+затем
+
+```
+allureServerSend
+```
