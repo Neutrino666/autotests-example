@@ -57,7 +57,8 @@ tasks.getByName('allureArchive') {
     mustRunAfter "test"
 }
 tasks.getByName('test') {
-    finalizedBy "allureServerGenerate"
+// Убрать комментарий если будет поднят allure в докере
+//    finalizedBy "allureServerGenerate"
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -71,6 +72,8 @@ dependencies {
     testImplementation("io.qameta.allure:allure-selenide:${allureVersion}") {
         exclude group: 'com.codeborne'
     }
+    testImplementation "io.qameta.allure:allure-assertj:${allureVersion}"
+    testImplementation "io.qameta.allure:allure-rest-assured:${allureVersion}"
     // WEB
     testImplementation "com.codeborne:selenide:${selenideVersion}"
     // Annotation
@@ -78,6 +81,15 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testImplementation "com.github.spotbugs:spotbugs-annotations:${spotbugsVersion}"
     testAnnotationProcessor "com.github.spotbugs:spotbugs-annotations:${spotbugsVersion}"
+
+    // Rest assured
+    testImplementation 'io.rest-assured:rest-assured:5.4.0'
+
+    // JSON
+    testImplementation 'org.json:json:20231013'
+
+    // Assertions
+    testImplementation 'org.assertj:assertj-core:3.27.7'
 }
 
 test {
