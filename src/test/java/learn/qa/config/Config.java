@@ -13,4 +13,7 @@ public interface Config {
 
   @Nonnull
   String frontUrl();
+
+  @Nonnull
+  String backendUrl();
 }
